@@ -11,7 +11,7 @@ namespace MarkdownDevBed
 	class Program
 	{
 		public static Regex rxExtractLanguage = new Regex("^({{(.+)}}[\r\n])", RegexOptions.Compiled);
-		public static string FormatCodePrettyPrint(Markdown m, string code)
+		public static string FormatCodePrettyPrint(Markdown m, string lanuageName, string code)
 		{
 			var match = rxExtractLanguage.Match(code);
 			string language = null;

@@ -499,10 +499,11 @@ namespace MarkdownDeep
 		}
 
 		// Callback to format a code block (ie: apply syntax highlighting)
-		// string FormatCodeBlock(code)
+		// string FormatCodeBlock(markdown, language, code)
 		// Code = code block content (ie: the code to format)
+        // LexerName =  the name of the programming language
 		// Return the formatted code, including <pre> and <code> tags
-		public Func<Markdown, string, string> FormatCodeBlock;
+		public Func<Markdown, string, string, string> FormatCodeBlock;
 
 		// when set to true, will remove head blocks and make content available
 		// as HeadBlockContent

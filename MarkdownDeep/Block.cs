@@ -254,7 +254,7 @@ namespace MarkdownDeep
 							m.HtmlEncodeAndConvertTabsToSpaces(sb, line.buf, line.contentStart, line.contentLen);
 							sb.Append("\n");
 						}
-						b.Append(m.FormatCodeBlock(m, sb.ToString()));
+						b.Append(m.FormatCodeBlock(m, (string)data, sb.ToString()));
 					}
 					else
 					{

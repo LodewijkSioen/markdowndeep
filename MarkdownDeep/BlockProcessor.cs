@@ -654,9 +654,9 @@ namespace MarkdownDeep
 			}
 
 			// Fenced code blocks?
-			if (m_markdown.ExtraMode && ch == '~')
+			if (m_markdown.ExtraMode && (ch == '~' || ch == '`'))
 			{
-				if (ProcessFencedCodeBlock(b))
+				if (ProcessFencedCodeBlock(b, ch))
 					return b.blockType;
 
 				// Rewind
@@ -1480,11 +1480,11 @@ namespace MarkdownDeep
 			return item;
 		}
 
-		bool ProcessFencedCodeBlock(Block b)
+		bool ProcessFencedCodeBlock(Block b, char fence)
 		{
 			// Extract the fence
 			Mark();
-			while (current == '~')
+			while (current == fence)
 				SkipForward(1);
 			string strFence = Extract();
 
@@ -1492,10 +1492,16 @@ namespace MarkdownDeep
 			if (strFence.Length < 3)
 				return false;
 
-			// Rest of line must be blank
+			// Rest of line must be blank or contain LexerName
 			SkipLinespace();
-			if (!eol)
-				return false;
+            var languageName = string.Empty;
+
+            if (!eol)
+            {
+                int startLexer = position;
+                SkipToEol();
+                languageName = Substring(startLexer, position - startLexer).Trim();
+            }			
 
 			// Skip the eol and remember start of code
 			SkipEol();
@@ -1521,6 +1527,7 @@ namespace MarkdownDeep
 
 			// Create the code block
 			b.blockType = BlockType.codeblock;
+            b.data = languageName;
 			b.children = new List<Block>();
 
 			// Remove the trailing line end
