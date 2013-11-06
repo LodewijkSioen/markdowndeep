@@ -13,7 +13,8 @@ namespace MarkdownDeepTests
 		[SetUp]
 		public void Setup()
 		{
-			p = new BlockProcessor(new Markdown(), false);
+            m = new Markdown();
+			p = new BlockProcessor(m, false);
 		}
 
 		[Test]
@@ -111,6 +112,36 @@ namespace MarkdownDeepTests
 			Assert.AreEqual("paragraph", b[1].Content);
 		}
 
+        [Test]
+        public void FencedCodeBlock([Values('`', '~')]char fence)
+        {
+            m.ExtraMode = true;
+            var b = p.Process(string.Format("{0}{0}{0}\ncode1\n\tcode2\ncode3\n{0}{0}{0}\nparagraph", fence));
+            Assert.AreEqual(2, b.Count);
+
+            Block cb = b[0] as Block;
+            Assert.AreEqual("code1\n\tcode2\ncode3\n", cb.Content);
+            Assert.AreEqual(string.Empty, cb.data);
+
+            Assert.AreEqual(BlockType.p, b[1].blockType);
+            Assert.AreEqual("paragraph", b[1].Content);
+        }
+
+        [Test]
+        public void FencedCodeBlockWithLanguage()
+        {
+            m.ExtraMode = true;
+            var b = p.Process("```javascript\ncode1\n\tcode2\ncode3\n```\nparagraph");
+            Assert.AreEqual(2, b.Count);
+
+            Block cb = b[0] as Block;
+            Assert.AreEqual("code1\n\tcode2\ncode3\n", cb.Content);
+            Assert.AreEqual("javascript", cb.data);
+
+            Assert.AreEqual(BlockType.p, b[1].blockType);
+            Assert.AreEqual("paragraph", b[1].Content);
+        }
+
 		[Test]
 		public void HtmlBlock()
 		{
@@ -159,5 +190,6 @@ namespace MarkdownDeepTests
 
 
 		BlockProcessor p;
+	    Markdown m;
 	}
 }

@@ -411,6 +411,8 @@
     <Content Include="JSTestResources\MarkdownDeep.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="testfiles\blocktests\FencedCodeBlocks%28ExtraMode%29.html" />
+    <EmbeddedResource Include="testfiles\blocktests\FencedCodeBlocks%28ExtraMode%29.txt" />
     <EmbeddedResource Include="testfiles\blocktests\PartiallyIndentedLists.html" />
     <EmbeddedResource Include="testfiles\blocktests\PartiallyIndentedLists.txt" />
     <EmbeddedResource Include="testfiles\blocktests\HtmlAttributeWithoutValue.txt" />
@@ -464,6 +466,7 @@
     <PostBuildEvent>xcopy /D /Y "$(SolutionDir)MarkdownDeepJS\*.js" "$(ProjectDir)JSTestResources"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>nuget.exe install $(ProjectDir)packages.config -o $(ProjectDir)..\Packages</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
